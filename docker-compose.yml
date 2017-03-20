@@ -1,0 +1,19 @@
+version: "2"
+services:
+  mongo:
+    build:
+        context: .
+        dockerfile: dockerfiles/dockerfile_mongo
+    volumes:
+        - ./data/db:/data/db
+    network_mode: "host"
+
+  reddit:
+    build:
+        context: .
+        dockerfile: dockerfiles/dockerfile_reddit_monitor
+    volumes:
+        - .:/code
+    depends_on:
+        - mongo
+    network_mode: "host"

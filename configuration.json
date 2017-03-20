@@ -1,0 +1,14 @@
+{
+  "subreddits": ["learnpython", "AskReddit", "funny", "todayilearned"],
+
+  "database": {
+    "host": "localhost",
+    "port": 27017
+  },
+
+  "reddit": {
+    "client_id": "FM_44Hgx49pC7g",
+    "client_secret": "GxfbBqDjgntCEl176uJakmEr_p4",
+    "user_agent": "hootsuite_bot:v1.0"
+  }
+}

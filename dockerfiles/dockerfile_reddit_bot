@@ -1,0 +1,12 @@
+# use image
+FROM python:2.7.13
+
+# copy the code to the container
+ADD ./bin/ ./configuration.json ./pip_requirements_reddit_bot /code/
+WORKDIR /code/
+
+# run configuration
+RUN pip install -r pip_requirements_reddit_bot
+
+# start script
+CMD [ "python", "./reddit_bot.py" ]
