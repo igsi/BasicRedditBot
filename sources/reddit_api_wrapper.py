@@ -8,6 +8,7 @@ class RedditWrapper:
                              client_secret = configuration["client_secret"],
                              user_agent = configuration["user_agent"])
 
+        # Parse the list of subreddits read from the config.
         multiple_subreddits=subreddits[0]
         for subreddit in subreddits[1:]:
             multiple_subreddits = multiple_subreddits + "+" + subreddit
@@ -36,6 +37,7 @@ class RedditWrapper:
         return stream
 
     def _jsonifySubmission(self, submission):
+        """Normalize the submissions into a simple json format."""
         return {"reddit_id": submission.id,
                 "type": "SUBMISSION",
                 "content": submission.title,
@@ -43,6 +45,7 @@ class RedditWrapper:
                 "subreddit": str(submission.subreddit)}
 
     def _jsonifyComment(self, comment):
+        """Normalize the comments into a simple json format."""
         return {"reddit_id": comment.id,
                 "type": "COMMENT",
                 "content": comment.body,

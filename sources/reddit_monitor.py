@@ -7,12 +7,16 @@ import configuration
 from db_api_wrapper import DBWrapper
 from reddit_api_wrapper import RedditWrapper
 
+
+# This event is used to notify threads to stop listening for new items on the monitored subreddits.
 stop_event = threading.Event()
 
 
 def exitGracefully(signum, frame):
+    """Handler for SIGINT. Used to terminate the program."""
+
     print "Stopping everything, please wait..."
-    stop_event.set()
+    stop_event.set() # notify threads to stop, if they are not blocked
 
     # Because waiting for a new item in monitorForNewEntriesAndSaveInDB is blocking,
     # until new items are inserted the stop_event will not be checked.
@@ -23,6 +27,7 @@ def exitGracefully(signum, frame):
 
 
 def monitorForNewEntriesAndSaveInDB(stream, db, stop_event=None):
+    """Takes as input a generator (stream) and whenever a new item is generated it is saved in the db."""
     for item in stream():
         if (stop_event is not None and stop_event.is_set()):
             break
@@ -30,16 +35,27 @@ def monitorForNewEntriesAndSaveInDB(stream, db, stop_event=None):
 
 
 def monitorSubreddits():
+    """Listens for new entries (submissions and comments) in the monitored subreddits.
+    The list of subredits to monitor is specified in configuration.json."""
+
+    # Gets the configuration to use. These are settings regarding how to connect to
+    # the DB and which subreddits to listen to.
     config = configuration.getConfiguration()
+
+    print "Monitoring the following subreddits for new submissions/comments: " + str(config["reddit"])
+
+    # Object used to access the Reddit API.
     reddit = RedditWrapper(config["reddit"], config["subreddits"])
     db = DBWrapper(config["database"])
 
+    # Create a new thread which will listen for new comments.
     threadPost = threading.Thread(target=monitorForNewEntriesAndSaveInDB,
                                   args=(reddit.getCommentsStream(), db, stop_event))
 
+    # From this point on, change the handler used when the user send SIGINT.
     signal.signal(signal.SIGINT, exitGracefully)
 
-    # Do work in other thread. Listen for new comments.
+    # Do work in the other thread. Listen for new comments.
     threadPost.start()
 
     # Do work in main thread. Listen for new submissions

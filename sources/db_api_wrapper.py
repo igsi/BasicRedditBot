@@ -11,9 +11,9 @@ class DBWrapper:
 
         self.db = self.mongo["reddit_data"]
 
+        # If this collection does not exist, force its creation. This is required in order to create the indexes.
         if "items" not in self.db.collection_names():
             self.db.create_collection("items")
-
         self.items = self.db["items"]
 
         self._createIndexes()
@@ -22,6 +22,7 @@ class DBWrapper:
         self.items.insert(data)
 
     def _createIndexes(self):
+        """Checks to see if indexes exist. If not it creates them."""
         indexName1 = "subredditIndex"
         indexName2 = "keywordIndex"
 

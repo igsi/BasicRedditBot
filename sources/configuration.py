@@ -3,9 +3,11 @@ import json
 def getConfiguration():
     configuration = None
 
+    # Read the configuration from a file.
     with open('configuration.json') as data_file:
         configuration = json.load(data_file)
 
+    # Get the list of subreddits, this is the only mandatory key.
     if ("subreddits" not in configuration.keys() or not configuration["subreddits"]):
         raise ValueError("Configuration.json has to contain a list of subreddits under the key 'subreddits'.")
 
@@ -14,6 +16,7 @@ def getConfiguration():
     return configuration
 
 def setMissingValues(configuration):
+    """If the configuration for the webserver, reddit or DB are missing, set these default values."""
     configuration["database"] = configuration.get("database", {"host": "localhost", "port": 27017})
     configuration["database"]["host"] = configuration["database"].get("host", "localhost")
     configuration["database"]["port"] = configuration["database"].get("port", 27017)
