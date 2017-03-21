@@ -17,3 +17,13 @@ services:
     depends_on:
         - mongo
     network_mode: "host"
+
+  webserver:
+    build:
+        context: .
+        dockerfile: dockerfiles/dockerfile_webserver
+    volumes:
+        - .:/code
+    depends_on:
+        - mongo
+    network_mode: "host"

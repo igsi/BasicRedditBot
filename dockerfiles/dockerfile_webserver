@@ -1,0 +1,12 @@
+# use image
+FROM python:2.7.13
+
+# copy the code to the container
+ADD ./sources/ ./configuration.json ./pip_requirements_webserver /sources/
+WORKDIR /sources/
+
+# run configuration
+RUN pip install -r pip_requirements_webserver
+
+# start script
+CMD [ "python", "/sources/webserver.py" ]
