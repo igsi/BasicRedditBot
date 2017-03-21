@@ -11,6 +11,9 @@ class DBWrapper:
 
         self.db = self.mongo["reddit_data"]
 
+        if "items" not in self.db.collection_names():
+            self.db.create_collection("items")
+
         self.items = self.db["items"]
 
         self._createIndexes()
