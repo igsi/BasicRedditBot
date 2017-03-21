@@ -18,9 +18,6 @@ class DBWrapper:
     def insert(self, data):
         self.items.insert(data)
 
-    def find(self, filter):
-        return self.items.find(filter)
-
     def _createIndexes(self):
         indexName1 = "subredditIndex"
         indexName2 = "keywordIndex"
@@ -29,7 +26,8 @@ class DBWrapper:
             self.items.create_index([("timestamp", pymongo.DESCENDING), ("subreddit", pymongo.ASCENDING)],
                                     name=indexName1)
 
+        # This index will provide keyword search capabilities on the content field.
         if indexName2 not in self.items.index_information():
             self.items.create_index([("content", pymongo.TEXT)],
-                                    default_language="none", #u se simple tokenization and exact keyword match
+                                    default_language="none", # use simple tokenization and exact keyword match
                                     name=indexName2)

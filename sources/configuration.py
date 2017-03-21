@@ -24,3 +24,7 @@ def setMissingValues(configuration):
     configuration["reddit"]["client_id"] = configuration["reddit"].get("client_id", "FM_44Hgx49pC7g")
     configuration["reddit"]["client_secret"] = configuration["reddit"].get("client_secret", "GxfbBqDjgntCEl176uJakmEr_p4")
     configuration["reddit"]["user_agent"] = configuration["reddit"].get("user_agent", "hootsuite_bot:v1.0")
+
+    configuration["webserver"] = configuration.get("webserver", {"host": "localhost", "port": 5000})
+    configuration["webserver"]["host"] = configuration["webserver"].get("host", "localhost")
+    configuration["webserver"]["port"] = configuration["webserver"].get("port", 5000)
