@@ -10,5 +10,10 @@
     "client_id": "FM_44Hgx49pC7g",
     "client_secret": "GxfbBqDjgntCEl176uJakmEr_p4",
     "user_agent": "hootsuite_bot:v1.0"
+  },
+
+  "webserver": {
+    "host": "localhost",
+    "port": 5000
   }
 }

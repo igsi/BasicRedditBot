@@ -3,7 +3,7 @@ import json
 def getConfiguration():
     configuration = None
 
-    with open('../configuration.json') as data_file:
+    with open('configuration.json') as data_file:
         configuration = json.load(data_file)
 
     if ("subreddits" not in configuration.keys() or not configuration["subreddits"]):
