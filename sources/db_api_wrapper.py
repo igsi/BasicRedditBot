@@ -26,7 +26,7 @@ class DBWrapper:
         indexName2 = "keywordIndex"
 
         if indexName1 not in self.items.index_information():
-            self.items.create_index([("subreddit", pymongo.ASCENDING), ("timestamp", pymongo.DESCENDING)],
+            self.items.create_index([("timestamp", pymongo.DESCENDING), ("subreddit", pymongo.ASCENDING)],
                                     name=indexName1)
 
         if indexName2 not in self.items.index_information():
