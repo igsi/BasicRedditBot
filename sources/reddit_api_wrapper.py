@@ -21,11 +21,11 @@ class RedditWrapper:
 
     def getSubmissionsStream(self):
         return self._itemsStream(self.subreddits.stream.submissions,
-                                 self._jsonifySubmission)
+                                 RedditWrapper._jsonifySubmission)
 
     def getCommentsStream(self):
         return self._itemsStream(self.subreddits.stream.comments,
-                                 self._jsonifyComment)
+                                 RedditWrapper._jsonifyComment)
 
     def _itemsStream(self, itemsGenerator, jsonifyItem):
         def stream():
@@ -40,7 +40,8 @@ class RedditWrapper:
 
         return stream
 
-    def _jsonifySubmission(self, submission):
+    @staticmethod
+    def _jsonifySubmission(submission):
         """Normalize the submissions into a simple json format."""
         return {"reddit_id": submission.id,
                 "type": "SUBMISSION",
@@ -48,7 +49,8 @@ class RedditWrapper:
                 "timestamp": submission.created_utc,
                 "subreddit": str(submission.subreddit)}
 
-    def _jsonifyComment(self, comment):
+    @staticmethod
+    def _jsonifyComment(comment):
         """Normalize the comments into a simple json format."""
         return {"reddit_id": comment.id,
                 "type": "COMMENT",
