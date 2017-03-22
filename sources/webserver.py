@@ -45,6 +45,9 @@ def variables():
 
 def getQuery(subreddit, t1, t2, keyword):
     """Constructs the query to retrieve data from the DB."""
+    if not subreddit or not t1 or not t2:
+        raise ValueError("Wrong values for query parameters")
+
     query = {"subreddit": {"$eq": subreddit},
              "timestamp": {"$gte": float(t1), "$lt": float(t2)}}
 
