@@ -67,4 +67,8 @@ def monitorSubreddits():
 
 
 if __name__ == '__main__':
-    monitorSubreddits()
+    try:
+        monitorSubreddits()
+    except Exception as e:
+        print "An error ocured: ", e.message
+        sys.exit(1)

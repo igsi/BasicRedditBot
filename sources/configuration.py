@@ -3,9 +3,13 @@ import json
 def getConfiguration():
     configuration = None
 
-    # Read the configuration from a file.
-    with open('configuration.json') as data_file:
-        configuration = json.load(data_file)
+    try:
+        # Read the configuration from a file.
+        with open('configuration.json') as data_file:
+            configuration = json.load(data_file)
+    except:
+        print "Could not read configuration.json"
+        raise
 
     # Get the list of subreddits, this is the only mandatory key.
     if ("subreddits" not in configuration.keys() or not configuration["subreddits"]):

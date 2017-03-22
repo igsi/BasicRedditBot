@@ -4,16 +4,20 @@ import praw
 class RedditWrapper:
 
     def __init__(self, configuration, subreddits):
-        self.reddit = praw.Reddit(client_id = configuration["client_id"],
-                             client_secret = configuration["client_secret"],
-                             user_agent = configuration["user_agent"])
+        try:
+            self.reddit = praw.Reddit(client_id = configuration["client_id"],
+                                 client_secret = configuration["client_secret"],
+                                 user_agent = configuration["user_agent"])
 
-        # Parse the list of subreddits read from the config.
-        multiple_subreddits=subreddits[0]
-        for subreddit in subreddits[1:]:
-            multiple_subreddits = multiple_subreddits + "+" + subreddit
+            # Parse the list of subreddits read from the config.
+            multiple_subreddits=subreddits[0]
+            for subreddit in subreddits[1:]:
+                multiple_subreddits = multiple_subreddits + "+" + subreddit
 
-        self.subreddits = self.reddit.subreddit(multiple_subreddits)
+            self.subreddits = self.reddit.subreddit(multiple_subreddits)
+        except:
+            print "Error when trying to create connection to Reddit."
+            raise
 
     def getSubmissionsStream(self):
         return self._itemsStream(self.subreddits.stream.submissions,
