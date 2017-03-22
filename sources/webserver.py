@@ -8,7 +8,7 @@ app = Flask(__name__)
 
 
 @app.route('/items', methods = ['GET'])
-def variables():
+def replyToQuery():
     # Get the values of the parameters from the URL query string.
     subreddit = request.args.get("subreddit")
     t1 = request.args.get("t1")
