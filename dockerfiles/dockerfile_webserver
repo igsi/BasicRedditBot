@@ -2,7 +2,7 @@
 FROM python:2.7.13
 
 # copy the code to the container
-ADD ./sources/ ./configuration.json ./pip_requirements_webserver /sources/
+ADD ./sources/*.py ./configuration.json ./pip_requirements_webserver /sources/
 WORKDIR /sources/
 
 # run configuration
