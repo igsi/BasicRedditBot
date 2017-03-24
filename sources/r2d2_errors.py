@@ -17,3 +17,8 @@ class R2D2_ConfigurationError(R2D2_Error):
 class R2D2_DatabaseError(R2D2_Error):
     def __init__(self,*args,**kwargs):
         R2D2_Error.__init__(self,*args,**kwargs)
+
+
+class R2D2_BadValueError(R2D2_Error):
+    def __init__(self,*args,**kwargs):
+        R2D2_Error.__init__(self,*args,**kwargs)
