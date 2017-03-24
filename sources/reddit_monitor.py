@@ -43,7 +43,7 @@ def monitorSubreddits():
     # the DB and which subreddits to listen to.
     config = configuration.getConfiguration()
 
-    print "Monitoring the following subreddits for new submissions/comments: " + str(config["reddit"])
+    print "Monitoring the following subreddits for new submissions/comments: " + str(config["subreddits"])
 
     # Object used to access the Reddit API.
     reddit = RedditWrapper(config["reddit"], config["subreddits"])
