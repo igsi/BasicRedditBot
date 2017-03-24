@@ -19,12 +19,14 @@ This project uses 3 docker images, these contain:
   * **/all** which lists all items in the DB
   * **/items?subreddit=<subreddit>&from=<t1>&to=<t2>&keyword=<kw>** where:
     * *subreddit* is the subreddit name (e.g. for https://www.reddit.com/r/python the subreddit is python)
-    * *from* and *to* areUNIX timestamps that define the time frame range
-    * *keyword* is optional and it allows for an exact word search in the content field of items stored in the DB. The search is case-insensitive.
+    * *from* and *to* are UNIX timestamps that define the time frame range
+    * *keyword* is optional and allows for an exact word search in the content field of items stored in the DB. The search is case-insensitive.
 
 ### Configuration
 The program is configured through the file **configuration.json**. It has 4 sections:
-* **subbredits** mandatory sections which contains the list of subreddits to monitor.
+* **subbredits** mandatory section which contains the list of subreddits to monitor.
 * **database** it contains details on how to connect to the Mongo DB instance. It does not have an effect on the DB instance itself.
 * **reddit** client details for using the reddit API.
 * **webserver** sets the server configuration.
+
+The sections database, reddit and webserver have default values, so they can be omitted.
