@@ -1,5 +1,7 @@
 import praw
 
+from r2d2_errors import R2D2_RedditError
+
 
 class RedditWrapper:
 
@@ -15,9 +17,9 @@ class RedditWrapper:
                 multiple_subreddits = multiple_subreddits + "+" + subreddit
 
             self.subreddits = self.reddit.subreddit(multiple_subreddits)
-        except:
-            print "Error when trying to create connection to Reddit."
-            raise
+
+        except Exception as e:
+            raise R2D2_RedditError(e.message)
 
     def getSubmissionsStream(self):
         return RedditWrapper.itemsStream(self.subreddits.stream.submissions,

@@ -6,6 +6,7 @@ import time
 import configuration
 from db_api_wrapper import DBWrapper
 from reddit_api_wrapper import RedditWrapper
+from r2d2_errors import R2D2_RedditError
 
 
 # This event is used to notify threads to stop listening for new items on the monitored subreddits.
@@ -69,6 +70,12 @@ def monitorSubreddits():
 if __name__ == '__main__':
     try:
         monitorSubreddits()
+
+    except R2D2_RedditError as e:
+        print "An error occured when trying to connect to Reddit."
+        print e.message
+        sys.exit(2)
+
     except Exception as e:
         print "An error ocured: ", e.message
         sys.exit(1)
