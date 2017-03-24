@@ -20,40 +20,58 @@ class RedditWrapper:
             raise
 
     def getSubmissionsStream(self):
-        return self._itemsStream(self.subreddits.stream.submissions,
-                                 RedditWrapper._jsonifySubmission)
+        return RedditWrapper.itemsStream(self.subreddits.stream.submissions,
+                                 RedditWrapper.submissionToDict)
 
     def getCommentsStream(self):
-        return self._itemsStream(self.subreddits.stream.comments,
-                                 RedditWrapper._jsonifyComment)
+        return RedditWrapper.itemsStream(self.subreddits.stream.comments,
+                                 RedditWrapper.commentToDict)
 
-    def _itemsStream(self, itemsGenerator, jsonifyItem):
+    @staticmethod
+    def itemsStream(itemsGenerator, normalizeItem):
         def stream():
             i = 1
             for item in itemsGenerator():
                 if (i <= 100):
-                    # first 100 items are historical
-                    # we discard them because we only want items starting from now
+                    # First 100 items are historical.
+                    # We discard them because we only want items starting from "now"
                     i += 1
                 else:
-                    yield jsonifyItem(item)
+                    yield normalizeItem(item)
 
         return stream
 
     @staticmethod
-    def _jsonifySubmission(submission):
-        """Normalize the submissions into a simple json format."""
-        return {"reddit_id": submission.id,
-                "type": "SUBMISSION",
-                "content": submission.title,
-                "timestamp": submission.created_utc,
-                "subreddit": str(submission.subreddit)}
+    def submissionToDict(submission):
+        """Normalize the submissions into a simple dictionary format."""
+        return RedditWrapper.createItem(submission.id,
+                                        "SUBMISSION",
+                                        submission.title,
+                                        submission.created_utc,
+                                        str(submission.subreddit))
 
     @staticmethod
-    def _jsonifyComment(comment):
-        """Normalize the comments into a simple json format."""
-        return {"reddit_id": comment.id,
-                "type": "COMMENT",
-                "content": comment.body,
-                "timestamp": comment.created_utc,
-                "subreddit": str(comment.subreddit)}
+    def commentToDict(comment):
+        """Normalize the comments into a simple dictionary format."""
+        return RedditWrapper.createItem(comment.id,
+                                        "COMMENT",
+                                        comment.body,
+                                        comment.created_utc,
+                                        str(comment.subreddit))
+
+    @staticmethod
+    def createItem(id, type, content, timestamp, subreddit):
+        """Normalize DB items into a dictionary."""
+        return {RedditWrapper.id_field:         id,
+                RedditWrapper.type_field:       type,
+                RedditWrapper.content_field:    content,
+                RedditWrapper.timestamp_field:  timestamp,
+                RedditWrapper.subreddit_field:  subreddit}
+
+    # The names of the fields in the dictionary used to represent items
+    # retrieved from the DB
+    id_field = "reddit_id"
+    type_field = "type"
+    content_field = "content"
+    timestamp_field = "timestamp"
+    subreddit_field = "subreddit"
