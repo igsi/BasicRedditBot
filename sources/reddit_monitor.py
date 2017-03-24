@@ -87,5 +87,5 @@ if __name__ == '__main__':
         sys.exit(4)
 
     except Exception as e:
-        print "An error ocured: ", e.message
+        print "An unexpected error ocured: ", e.message
         sys.exit(1)
