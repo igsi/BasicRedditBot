@@ -1,4 +1,5 @@
 import json
+from r2d2_errors import R2D2_ConfigurationError
 
 def getConfiguration():
     configuration = None
@@ -7,13 +8,12 @@ def getConfiguration():
         # Read the configuration from a file.
         with open('configuration.json') as data_file:
             configuration = json.load(data_file)
-    except:
-        print "Could not read configuration.json"
-        raise
+    except Exception as e:
+        raise R2D2_ConfigurationError(e.message())
 
     # Get the list of subreddits, this is the only mandatory key.
     if ("subreddits" not in configuration.keys() or not configuration["subreddits"]):
-        raise ValueError("Configuration.json has to contain a list of subreddits under the key 'subreddits'.")
+        raise R2D2_ConfigurationError("Configuration.json has to contain a list of subreddits under the key 'subreddits'.")
 
     setMissingValues(configuration) # defaults for database and reddit configuration
 
