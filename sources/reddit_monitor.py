@@ -6,7 +6,7 @@ import time
 import configuration
 from db_api_wrapper import DBWrapper
 from reddit_api_wrapper import RedditWrapper
-from r2d2_errors import R2D2_RedditError, R2D2_ConfigurationError
+from r2d2_errors import R2D2_RedditError, R2D2_ConfigurationError, R2D2_DatabaseError
 
 
 # This event is used to notify threads to stop listening for new items on the monitored subreddits.
@@ -80,6 +80,11 @@ if __name__ == '__main__':
         print "An error occured when trying to read the configuration file 'Configuration.json'."
         print e.message
         sys.exit(3)
+
+    except R2D2_DatabaseError as e:
+        print "An error occured when trying to connect to the database."
+        print e.message
+        sys.exit(4)
 
     except Exception as e:
         print "An error ocured: ", e.message

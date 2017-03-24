@@ -1,4 +1,5 @@
 import pymongo
+from r2d2_errors import R2D2_DatabaseError
 
 
 # available fields: reddit_id, type, content, timestamp, subreddit
@@ -18,9 +19,8 @@ class DBWrapper:
             self.items = self.db["items"]
 
             self._createIndexes()
-        except:
-            print "Could not create DB connection"
-            raise
+        except Exception as e:
+            raise R2D2_DatabaseError(e.message)
 
     def insert(self, data):
         self.items.insert(data)
